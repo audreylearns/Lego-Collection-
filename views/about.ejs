@@ -1,0 +1,72 @@
+
+
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="/css/main.css" />
+
+</head>
+<body>
+    <!-- navbar -->
+
+    <%- include('partials/navbar', {page: '/about'}) %>
+    
+
+
+
+    <div class="container bg-base-100 mx-auto"> <span class="hero text-2xl">All about me</span> 
+        
+        <!-- grid 2 column -->
+        <!-- left: image i like -->
+
+        <!-- something about me -->
+
+            <!-- grid w 2 columns each w a card of: image, name, description, link btn==set_num of the card -->
+        <!-- <div class="grid gap-4 grid-cols-2">  -->
+        <div class="flex justify-center gap-2"> 
+                 <!-- Left --> 
+             
+            <div class="shadow-l">
+                <figure><img class="h-auto max-w-xs" src="img_mine.jpg" alt="I gradauted"/></figure>
+            </div> 
+            <!-- right -->
+            <div class="shadow-xl bg-base-100 ">
+                <p class=" text-center">
+                  <br>
+                  Hi, my name is Audrey Duzon.
+                  <br>
+                  I am a student of Seneca College in year 2.
+                  <br>
+                  <br>
+                  I am very hopeful about this career transition. I used to be a health care provider.
+                  <br>I have worked in hospitals, private clinics and dentistry.
+                </p>
+                <br>
+                <h1 class="text-center text-xl font-semibold">fun facts about me!</h1>
+                <br>
+                <p class=" text-center">I like...
+                    <ul class="text-center">
+                        <br>
+                        <li class="font-semibold text-primary">Video games</li>
+                        <span> Project Diva, Final Fantasy 7, Sekiro</span>
+                        
+                        <li class="font-semibold text-primary">Anime</li>
+                        <span> Jujutsu Kaisen, Naruto, Avatar The Last Airbender</span>
+                        
+                        <li class="font-semibold text-primary">Art</li>
+                        <span>When there are better laws regarding privacy and copyright, I will upload again</span>
+                    </ul>
+                    <br>
+                    <br>
+                    <p class=" text-center">I hope to snatch a co-op placement soon!</p>
+                </p>
+
+            </div>
+        </div> 
+    </div>
+
+</body>
+</html>

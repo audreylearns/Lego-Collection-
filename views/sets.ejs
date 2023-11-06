@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<!-- <html data-theme="pastel" lang="en"></html> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego_collection</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <!-- <link rel="stylesheet" href="../css/main.css" />  -->
+
+</head>
+<body>
+    <!-- navbar -->
+    <%- include('partials/navbar', {page: "/lego/sets"}) %>
+
+<!-- delete above FIX -->
+        <!-- //re buttons hardcoded as per instructions -->
+        <div class="flex justify-center items-center">
+            <p class="text-lg">Explore by popular themes: </p>
+            <!-- <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets">All</a>
+            </button>   -->
+
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=town">Town</a>
+            </button>
+
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary  ">
+                <a href="/lego/sets?theme=Modular%20Buildings">Modular Buildings</a>
+            </button>
+        
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary ">
+                <a href="/lego/sets?theme=Ultimate%20Collector%20Series">Ultimate Collector Series</a>
+            </button>      
+
+            <!-- <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=Bulk%20Bricks">Bulk Bricks</a>
+            </button>   -->
+
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=Christmas">Christmas</a>
+            </button>  
+
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=Easter">Easter</a>
+            </button>  
+
+            <!-- <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=Technic">Technic</a>
+            </button>   -->
+
+            <button class="btn btn-active:bg-violet-600 hover:bg-violet-600 hover:text-base-100 bg-primary">
+                <a href="/lego/sets?theme=Creator_Expert">Expert</a>
+            </button>  
+        </div>
+
+        
+
+        <br>
+        <br>
+        <div class="flex justify-center">
+        <table class="shadow-md table-fixed table-pin-cols px-7" >
+            <!-- sets is the js obj sent to this ejs, legoSets is the individual elements {sets: legoSets} -->
+            <th class="text-violet-700 uppercase text-lg  px-7">Preview</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7 ">Name</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7">Theme</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7">Year</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7">pieces</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7">...</th> 
+
+        <% sets.forEach(legoSets=>{ %>
+            <tr class="hover hover:bg-violet-600 hover:text-base-100 px-7">
+            <td><figure class="avatar w-24 mask mask-squircle ">
+                <img src="<%= legoSets.img_url %>" />
+                </figure>
+            </td>
+            <!-- image object include link here -->
+            <td class="px-7"><%= legoSets.name %></td>
+            
+            <!-- dynamic -->
+            <!-- <td class="px-7"><%= legoSets.theme %></td> -->
+            <td>
+                <a class="btn bg-primary px-7" href="/lego/sets?theme=<%= legoSets.theme %>"><%= legoSets.theme %></a>
+            </td>
+
+            <td class="px-7"><%= legoSets.year %></td>
+            <td class="px-7"><%= legoSets.num_parts %></td>
+            <!-- A link with the text "details" that links to "/lego/sets/set_num"
+                where set_num is the "set_num" value for the set (consider styling this link as a button)  use the function-->
+            <td><a class="btn bg-amber-400 px-7" href="/lego/sets/<%= legoSets.set_num %>">Details</a></td>
+            </tr>
+        <% }) %>
+        </table>
+        </div>
+    </main>
+</body>
+</html>

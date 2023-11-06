@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<!-- <html data-theme="pastel" lang="en"></html> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego_collection</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <!-- <link rel="stylesheet" href="../css/main.css" />  -->
+    
+</head>
+<body>
+  <%- include('partials/navbar', {page: '/home'}) %>
+      <!-- hero component -->
+    <div class="container mx-auto">
+        <span class="hero">Explore the entire collection</span> 
+        <button class="hero btn btn-primary"><a href=/lego/sets>Collection</a></button>
+    
+      <!-- grid w 3columns each w a card of: image, name, description, link btn==set_num of the card -->
+       <div class="centered grid grid-cols-3 gap-3"> 
+          <!-- C1 -->
+          <div class="card  bg-base-100 shadow-xl">
+            <figure><img src="https://cdn.rebrickable.com/media/sets/10169-1.jpg" alt="Chicken & Chicks"/></figure> 
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">Chicken & Chicks</h2>
+              <p class="">A Easter product released on 2005 with 61 parts.</p>
+              <div class="card-actions">
+                <button class="place-items-center btn bg-primary"><a href="/lego/sets/10169-1">10169-1</a></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- C2 -->
+          <div class="card  bg-base-100 shadow-xl">
+            <figure><img src="https://cdn.rebrickable.com/media/sets/10166-1.jpg" alt="Elf Girl"/></figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">Elf Girl</h2>
+              <p class="">A Christmas Special product released on 2004 with 31 parts.</p>
+              <div class="card-actions">
+                <button class="btn bg-primary"><a href="/lego/sets/10166-1">10166-1</a></button>
+              </div>
+            </div>
+          </div>
+    
+
+          <!-- c3 -->
+          <div class="card bg-base-100 shadow-xl">
+            <figure><img src="https://cdn.rebrickable.com/media/sets/10165-1.jpg" alt="Elf Boy"/></figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">Chicken & Chicks</h2>
+              <p class="">A Christmas Special product released on 2004 with 27 parts.</p>
+              <div class="card-actions">
+                <button class="btn bg-primary"><a href="/lego/sets/10165-1">10165-1</a></button>
+                
+              </div>
+            </div>
+          </div>
+
+        <!-- C4 -->
+        <div class="card  bg-base-100 shadow-xl">
+          <figure><img src="https://cdn.rebrickable.com/media/sets/10182-1.jpg" alt="Cafe Corner"/></figure> 
+          <div class="card-body items-center text-center">
+            <h2 class="card-title">Cafe Corner</h2>
+            <p class="">Released on 2007 with 2058 parts.</p>
+            <div class="card-actions">
+              <button class="btn bg-primary"><a href="/lego/sets/10182-1">10182-1</a></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- C5 -->
+        <div class="card  bg-base-100 shadow-xl">
+          <figure><img src="https://cdn.rebrickable.com/media/sets/10184-1.jpg" alt="Town Plan"/></figure>
+          <div class="card-body items-center text-center">
+            <h2 class="card-title">Town Plan</h2>
+            <p class="">Created to honor the 50th anniversary of the LEGO brick. Set contains 2013 parts, released on 2008</p>
+            <div class="card-actions">
+              <button class="btn bg-primary"><a href="/lego/sets/10184-1">10184-1</a></button>
+            </div>
+          </div>
+        </div>
+  
+
+        <!-- c6 -->
+        <div class="card  bg-base-100 shadow-xl">
+          <figure><img src="https://cdn.rebrickable.com/media/sets/9349-1.jpg" alt="Fairytale and Historic Minifigures"/></figure>
+          <div class="card-body items-center text-center">
+            <h2 class="card-title">Fairytale and Historic Minifigures</h2>
+            <p class="">Released on 2011 with 230 parts.</p>
+            <div class="card-actions">
+              <button class="btn bg-primary"><a href="/lego/sets/9349-1">9349-1</a></button>
+              
+            </div>
+          </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

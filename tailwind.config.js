@@ -1,14 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [`./views/*.html`], // all .html files
+  content: [`./views/**/*.ejs`], // all .html files
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  variants:{
+    extend:{
+      backgroundColor: ['active', 'hover', 'responsive'],
+      fontSize: ['active','hover',]
+    }
+  },
+  plugins: [require('@tailwindcss/typography'), require('daisyui'), require('tailwind-variants')],
   daisyui: {
     themes: ['pastel'],
-  },
+  }
 }
 
 

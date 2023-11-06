@@ -128,20 +128,20 @@ function newObj(data_set, data_theme, idx){
 //"theme" parameter may contain only part of
 // the "theme" string, and case is ignored
 
-function getSetsByTheme(theme){
-    var rtnArr = [];
-    var found = false;
+// function getSetsByTheme(theme){
+//     var rtnArr = [];
+//     var found = false;
 
-    for (i=0; i < sets.length; i++){
-        if (sets[i].theme.toLowerCase().includes(theme.toLowerCase())){
-           elemRtn = sets[i];
-           found = true;
-           rtnArr.push(elemRtn);
-        }
-    }
-    return found === true? rtnArr : "Object not found"
+//     for (i=0; i < sets.length; i++){
+//         if (sets[i].theme.toLowerCase().includes(theme.toLowerCase())){
+//            elemRtn = sets[i];
+//            found = true;
+//            rtnArr.push(elemRtn);
+//         }
+//     }
+//     return found === true? rtnArr : "Object not found"
 
-}
+// }
 
 
 //console.log(getSetsByTheme("Bulk Br")); pass

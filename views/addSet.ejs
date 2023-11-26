@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<!-- <html data-theme="pastel" lang="en"></html> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding a set</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <!-- <link rel="stylesheet" href="../css/main.css" />  -->
+    
+</head>
+<body>
+    <%- include('partials/navbar', {page: '/lego/addSet'}) %>
+    <span class="hero text-2xl">Add a set!</span> 
+    <br><br>
+    <div class="container mx-auto border-2  shadow-md shadow-violet-700 rounded-lg place-items-center"> 
+        <form method="post" action="/lego/addSet">
+            <br>
+            <!-- without labels, the input becomes null!!! be warned for next time -->
+            <label for="name" class="px-7">Name: </label>
+            <input type="text" name="name" id="name"class="input input-bordered input-xs w-full max-w-xs px-7" required />
+            <br><br>
+            
+            <label for="year" class="px-7">Year: </label>
+            <input type="number" name="year"  id="year" class="input input-bordered input-xs w-full max-w-xs px-7" required/>
+            <br><br>
+            
+            <label for="num_parts" class="px-7">Amount of parts: </label>
+            <input type="number" name="num_parts" id="num_parts" class="input input-bordered input-xs w-full max-w-xs px-7" required/>
+            <br><br>
+            
+            <label for="img_url" class="px-7">Image Url: </label>
+            <input type="url" name="img_url" id="img_url" class="input input-bordered input-xs w-full max-w-xs px-7" required/>
+            <br><br>
+
+            <label for="theme_id" class="px-7">Theme:  </label>
+            <select name="theme_id" id="theme_id" class=" border-2 border-neutral  rounded-lg px-7" required>
+                <option value="">** Please choose from the following themes **</option>
+                <% themes.forEach(theme=>{ %>
+                    <option value="<%= theme.id %>">
+                      <%= theme.name %>
+                    </option>
+                  <% }) %>
+            </select>
+            <br><br>
+
+            
+            <label for="set_num" class="px-7">Set Number: </label>
+            <input type="text" name="set_num" id="set_num" class="input input-bordered input-xs w-full max-w-xs px-7" required/>
+            <br><br>
+
+            <button class="btn bg-primary px-7" type="submit">Submit</button>
+            <br><br>
+          </form>
+    </div>
+</body>
+</html>

@@ -9,62 +9,87 @@
 * Name:AUDREY DUZON Student ID: 019153147 Date: OCT 23, 2023
 *
 ********************************************************************************/
+require('dotenv').config();
+const Sequelize = require('sequelize');
 
-//setData" and "themeData".
-const setData = require("../data/setData");     //global obj
-const themeData = require("../data/themeData");     //global obj
+//connection
+let sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: "postgres",
+    port: 5432,
+    dialectOptions: {
+      ssl: 
+      {
+        require: true, 
+        rejectUnauthorized: false 
+      },
+    },
+  });
 
-//completed array of Lego "set" objects, after processing the above "setData" and "themeData" arrays.
-let sets = [];
-
-//functions to create: NO PROMISE
-
-//1)    Initialize()
-//      The purpose of this function is to *fill* the "sets" array (declared above), by adding copies of *ALL* the setData objects
-//          include a new "theme" property == theme name from the themeData.json file
-//                      whose "id" value matches the "theme_id" for the "setData" object.
-//  ie theme_id: "1" += theme: "technic"
-//parse method :)
-
-
-// function Initialize(){
-//     // var obj = {};
-//     var set_len = setData.length;
-//     // var theme_len = data_theme.length;
-
-//     // for (i=0; i < set_len; i++){
-//     //     //initalize individual obj members
-//     //     obj.setNum = data_set[i].set_num;
-//     //     obj.name = data_set[i].name;
-//     //     obj.year = data_set[i].year;
-//     //     obj.theme_id = data_set[i].theme_id;
-//     //     obj.num_parts = data_set[i].num_parts;
-//     //     obj.img_url = data_set[i].img_url;
-
-//     //     //find theme data withim data_theme
-//     //     for (j=0; j < theme_len; j++){
-//     //         if (data_theme[j].id == obj.theme_id){
-//     //             obj.theme = data_theme[j].name; ////assign obj.theme 
-//     //             j = theme_len; //exit :)
-//     //         }
-//     //     }
-//     //     //add complete obj to sets array
-//     //     //sets.push(obj);
-
-//     // }
-//     for (i=0; i < set_len; i++){
-//         sets.push(newObj(setData,themeData,i));
-//     }
+//define Theme model:
+const Theme = sequelize.define(
+    'Theme',
+    {
+      id: {
+        type: Sequelize.INTEGER, //as per instructions
+        primaryKey: true, // as per instructions
+        autoIncrement: true, // as per instructions
+      },
+      name: Sequelize.STRING //as per instructions
+      
+    },
+    {
+      createdAt: false, // disable createdAt as per instructions
+      updatedAt: false, // disable updatedAt as per instructions
+    }
+  );
 
 
-// }
+
+//define set model:
+const Set = sequelize.define(
+    'Set',
+    {
+      set_num: {
+        type: Sequelize.STRING, //as per instructions
+        primaryKey: true, // as per instructions
+      },
+      name: Sequelize.STRING, //as per instructions,
+      year: Sequelize.INTEGER,
+      num_parts: Sequelize.INTEGER,
+      theme_id: Sequelize.INTEGER,
+      img_url: Sequelize.STRING
+      
+    },
+    {
+      createdAt: false, // disable createdAt as per instructions
+      updatedAt: false, // disable updatedAt as per instructions
+    }
+  );
+
+  //Create association between above:
+  //Set has a foreign key called 'theme_id' which references the id of Theme
+  Set.belongsTo(Theme, {foreignKey: 'theme_id'});
+
+  // const setData = require("../data/setData");
+  // const themeData = require("../data/themeData");
+  // let sets = [];
+
+  //connect to my DBS
+  sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established with NEON TECH successfully.');
+  })
+  .catch((err) => {
+    console.log('Unable to connect to the database:', err);
+  });
 
 //function to createa a 1 new obj from data at specific location
 function newObj(data_set, data_theme, idx){
     var obj = {};
     var theme_len = data_theme.length;
 
-    
     //initalize individual obj members
     obj.set_num = data_set[idx].set_num;
     obj.name = data_set[idx].name;
@@ -86,141 +111,170 @@ function newObj(data_set, data_theme, idx){
 
 }
 
-
-//Initialize(); //test pass resolves with no arg
-
-
-//2)    getAllSets()
-//      returns the complete "sets" array
-// function getAllSets(){
-//     return sets;
-// }
-
-//console.log(getAllSets()); //pass no arg
-
-
-//3)    getSetByNum(setNum)
-//      return a specific "set" object from the "sets" array, whose "set_num" value matches the value of the "setNum" parameter
-// function getSetByNum(setNum){
-//     var elemRtn;
-//     var found = false;
-
-//     for (i=0; i < sets.length; i++){
-//         if (sets[i].set_num === setNum){
-//            elemRtn = sets[i];
-//            found = true;
-//         }
-//     }
-
-//     return found === true? elemRtn : "Object not found"
-
-
-
-// }
-
-//console.log(getSetByNum("10055-1")); //pass
-//console.log(getSetByNum("0")) //cool pass
-
-
-
-//4)    getSetsByTheme(theme)
-//      return an array of objects from the "sets" array whose "theme" value matches the "theme" parameter
-//"theme" parameter may contain only part of
-// the "theme" string, and case is ignored
-
-function getSetsByTheme(theme){
-    var rtnArr = [];
-    var found = false;
-
-    for (i=0; i < sets.length; i++){
-        if (sets[i].theme.toLowerCase().includes(theme.toLowerCase())){
-           elemRtn = sets[i];
-           found = true;
-           rtnArr.push(elemRtn);
-        }
-    }
-    return found === true? rtnArr : "Object not found"
-
-}
-
-
-//console.log(getSetsByTheme("Bulk Br")); pass
-//console.log(getSetsByTheme("cas")); pass
-//console.log(getSetsByTheme("manga"));
-
-//test run before promise
-// Initialize();
-// getAllSets();
-// console.log(getSetByNum("932-1"));
-// console.log(getSetsByTheme("tle"));
-
-
-//PART 3 PROMISE version
 function Initialize(){
 
-    var set_len = setData.length;
-    for (i=0; i < set_len; i++){
-        sets.push(newObj(setData,themeData,i));
-    }
-    return new Promise((resolve,reject)=>{
-        sets.length > 0? resolve() : reject('Initialize function failed');
-    })
+  return new Promise((resolve, reject) => {
+      sequelize.sync().then(() => {
+          resolve();
+      })
+  });
 }
 
-// Initialize(); //correct
+//Initialize(); //correct
 
+/*
+4.	Change your code in the "getAllSets()" function to instead use the "Set" model (defined above) 
+to resolve the returned Promise with all returned sets 
+*/
 function getAllSets(){
-    return new Promise((resolve,reject) => {
-        resolve(sets);
-    })
+  return new Promise((resolve, reject) => {
+    Set.findAll({
+        include: [{ model: Theme, attributes: ["id", "name"] }],
+        raw: true //no preprocessing
+      })
+      .then((data) => {
+        return resolve(data);
+      })
+      
+
+  })
+
 }
 
-// getAllSets() //correct
-
+//getAllSets() //correct
+/*
+5.	Change your code in the "getSetByNum(setNum)" function to instead use the "Set" model (defined above) to resolve the returned
+ Promise with a single set whose set_num value matches the "setNum" parameter.  
+As before, if no set was found, reject the Promise with an error, ie: "Unable to find requested set"
+*/
 function getSetByNum(setNum){
-    var elemRtn;
-    var found = false;
-
-    for (i=0; i < sets.length; i++){
-        if (sets[i].set_num === setNum){
-           elemRtn = sets[i];
-           found = true;
-        }
-    }
-
-    //return found === true? elemRtn : "Object not found"
-    return new Promise((resolve,reject)=>{
-        found === true?  resolve(elemRtn) : reject('Object/s of '+ setNum + ' not found!');
+  return new Promise((resolve, reject) => {
+    Set.findOne(
+     {
+      where: {set_num: setNum},
+      include: [{ model: Theme, attributes: ["name"] }],
+      raw: true //no preprocessing
+     }) 
+    .then((data) => {
+      return resolve(data);
     })
-
-
+  })
 }
 
-// getSetByNum("9321-1"); //pass
-// getSetByNum("0"); //fail check 
-
+/*
+instead use the "Set" model (defined above) to resolve the returned Promise with all the returned sets whose "Theme.name"
+ property contains the string in the "theme" parameter.  
+*/
 function getSetsByTheme(theme){
-    var rtnArr = [];
-    var found = false;
-
-    for (i=0; i < sets.length; i++){
-        if (sets[i].theme.toLowerCase().includes(theme.toLowerCase())){
-           elemRtn = sets[i];
-           found = true;
-           rtnArr.push(elemRtn);
-        }
-    }
-    //return found === true? rtnArr : "Object not found"
-    return new Promise((resolve,reject)=>{
-        found === true?  resolve(rtnArr) : reject('Object/s of ' + theme + ' not found!');
+  return new Promise((resolve, reject) => {
+    Set.findAll({
+      include: [{ model: Theme, attributes: ["name"] }],
+      where: { 
+        '$Theme.name$': {[Sequelize.Op.iLike]: `%${theme}%`}},
+        raw: true //no preprocessing
+      }).then((data) => {
+      return resolve(data);
     })
+
+  })
 
 }
 
-// getSetsByTheme("Bulk Br") //pass
-// getSetsByTheme("cas")  //pass
-// getSetsByTheme("manga") //fail check
+//p5 new
+/*return a Promise that resolves once a set has been created, or rejects if there was an error.  
+It uses the "Set" model to create a new Set with the data from the "setData" parameter.
+ Once this function has resolved successfully, 
+ resolve the Promise returned by the addSet(setData) function without any data.  
+However, if the function did not resolve successfully, reject the Promise returned by the addSet(setData) 
+function with the message from the first error, ie: err.errors[0].message (this will provide a more human-readable error message)
+*/
+function addSet(setData){
+  return new Promise((resolve, reject) => {
+    Set.create(setData)
+    .then(()=>{
+      return resolve()
+    })
+    .catch((err) => {
+      return reject(err.errors[0].message )
+    })
+  })
+}
+/*
+This function must return a Promise that resolves with all the themes in the database.  
+This can be accomplished using the "Theme" model to return all of the themes in the database
+*/
+function getAllThemes(){
+  return new Promise((resolve, reject) => {
+    Theme.findAll({raw: true})
+    .then((data) => {
+    return resolve(data) //no preprocessing
+    })
+  })
+}
+
+//getAllThemes();
+
+function editSet(setnum, setData){
+  return new Promise((resolve, reject) => {
+    Set.update(setData,
+      {where:{set_num:setnum} })
+    .then((data) => {
+      console.log("Success! Lego is updated!")
+    return resolve(data) //no preprocessing
+    })
+    .catch((err) => {
+      return reject(err.errors[0].message )
+    })
+  })
+
+}
+
+function deleteSet(setnum){
+  return new Promise((resolve, reject) => {
+    Set.destroy(
+      {where:{set_num:setnum} })
+    .then(() => {
+      console.log("Success! Lego is removed!")
+    return resolve() //no preprocessing
+    })
+    .catch((err) => {
+      return reject(err.errors[0].message )
+    })
+  })
+
+}
+
 
 
 //export the functions in this module
-module.exports = { Initialize, getAllSets, getSetByNum, getSetsByTheme, newObj}
+module.exports = { Initialize, getAllSets, getSetByNum, getSetsByTheme, newObj, addSet, getAllThemes, editSet, deleteSet}
+
+// //bulk insert at the end, after module.exports
+// //Code Snippet to insert existing data from Set / Themes
+// sequelize
+//   .sync()
+//   .then( async () => {
+//     try{
+//       await Theme.bulkCreate(themeData);
+//       await Set.bulkCreate(setData); 
+//       console.log("-----");
+//       console.log("data inserted successfully");
+//     }catch(err){
+//       console.log("-----");
+//       console.log(err.message);
+
+//       // NOTE: If you receive the error:
+
+//       // insert or update on table "Sets" violates foreign key constraint "Sets_theme_id_fkey"
+
+//       // it is because you have a "set" in your collection that has a "theme_id" that does not exist in the "themeData".   
+
+//       // To fix this, use PgAdmin to delete the newly created "Themes" and "Sets" tables, fix the error in your .json files and re-run this code
+//     }
+
+//     process.exit();
+//   })
+//   .catch((err) => {
+//     console.log('Unable to connect to the database:', err);
+//   });
+

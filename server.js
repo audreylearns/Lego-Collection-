@@ -179,12 +179,16 @@ app.post('/lego/editSet', (req, res) => {
     })
     .catch((msg) => {
         console.log(msg);
-        res.status(404).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
+        res.status(500).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
        
     })
 
 });
 
+app.use((req, res, next) => {
+    res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
+
+  });
   
 app.use((req, res, next) => {
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});

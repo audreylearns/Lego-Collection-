@@ -31,15 +31,19 @@ const authData = require("./modules/auth-service")
 const clientSessions = require('client-sessions');
 
 //ensure resolve
-// legoData.Initialize().then(()=>{
-//     console.log("Lego data initialized");
-// });
+legoData.Initialize().then(()=>{
+    console.log("Lego data initialized");
+});
 
+//ensure resolve
+authData.Initialize().then(()=>{
+    console.log("Connected to MongoDB")
+})
 
 
 const express = require('express');
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT || 3000;
 
 //app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4
@@ -286,10 +290,10 @@ app.get("/logout", (req, res) => {
 
 
 //maybe delete
-app.use((req, res, next) => {
-    res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
+// app.use((req, res, next) => {
+//     res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
 
-  });
+//   });
   
 app.use((req, res, next) => {
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});

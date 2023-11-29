@@ -1,10 +1,6 @@
 /********************************************************************************
 
-<<<<<<< HEAD
 * WEB322 – Assignment 06
-=======
-* WEB322 – Assignment 05
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
 
 * 
 
@@ -18,11 +14,7 @@
 
 * 
 
-<<<<<<< HEAD
 * Name: AUDREY DUZON Student ID: 019153147 Date: NOVEMBER 29, 2023
-=======
-* Name: AUDREY DUZON Student ID: 019153147 Date: NOVEMBER 26, 2023
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
 
 *
 
@@ -49,7 +41,6 @@ const express = require('express');
 const app = express();
 const HTTP_PORT = process.env.PORT || 3000;
 
-<<<<<<< HEAD
 //app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4
 app.use(express.urlencoded({ extended: true })); //for json form handling
@@ -90,11 +81,6 @@ app.use(
     }
   }
 
-=======
-app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
-app.set('view engine', 'ejs'); //new addition A4
-app.use(express.urlencoded({ extended: true })); //for json form handling
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
 
 //ADD new A3 here
 //identify a static folder
@@ -165,11 +151,7 @@ app.get('/lego/sets/:num', (req,res) => { //hardcoded
 
 
 //form
-<<<<<<< HEAD
 app.get('/lego/addSet',ensureLogin, (req,res)=>{
-=======
-app.get('/lego/addSet', (req,res)=>{
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     legoData.getAllThemes()
     .then((data)=>{
         var themeData = JSON.stringify(data)
@@ -186,11 +168,7 @@ app.get('/lego/addSet', (req,res)=>{
 
 
 //form return
-<<<<<<< HEAD
 app.post('/lego/addSet',ensureLogin, (req, res) => {    
-=======
-app.post('/lego/addSet', (req, res) => {    
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     legoData.addSet(req.body)
     .then(() =>{
         res.redirect('/lego/sets');
@@ -202,11 +180,7 @@ app.post('/lego/addSet', (req, res) => {
     
   });
 
-<<<<<<< HEAD
   app.get('/lego/editSet/:num', ensureLogin, (req,res)=>{
-=======
-  app.get('/lego/editSet/:num', (req,res)=>{
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     const p = Promise.all([legoData.getSetByNum(req.params.num),legoData.getAllThemes()])
     p
     .then((values)=>{
@@ -226,11 +200,7 @@ app.post('/lego/addSet', (req, res) => {
 
 });
 
-<<<<<<< HEAD
 app.post('/lego/editSet', ensureLogin, (req, res) => {
-=======
-app.post('/lego/editSet', (req, res) => {
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     const setData = req.body
     legoData.editSet(setData.set_num,setData) //?
     .then(() =>{
@@ -243,11 +213,7 @@ app.post('/lego/editSet', (req, res) => {
     
   });
 
-<<<<<<< HEAD
   app.get('/lego/deleteSet/:num',ensureLogin, (req,res)=>{
-=======
-  app.get('/lego/deleteSet/:num', (req,res)=>{
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     legoData.deleteSet(req.params.num)
     .then(()=>{
         res.redirect('/lego/sets');
@@ -260,7 +226,6 @@ app.post('/lego/editSet', (req, res) => {
 
 });
 
-<<<<<<< HEAD
 //a6 routes
 app.get('/login', (req,res)=>{
     res.render("login",{error:'false'});
@@ -327,14 +292,6 @@ app.get("/logout", (req, res) => {
 //   });
   
 app.use((req, res, next) => {
-=======
-app.use((req, res, next) => {
-    res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
-
-  });
-  
-app.use((req, res, next) => {
->>>>>>> f6a16461caefa00e300d18ff73f162c13b9b3413
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});
 
   });

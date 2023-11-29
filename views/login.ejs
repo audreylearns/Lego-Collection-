@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<!-- <html data-theme="pastel" lang="en"></html> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <!-- <link rel="stylesheet" href="../css/main.css" />  -->
+    
+</head>
+
+
+<body>
+    <%- include('partials/navbar', {page: '/login'}) %>
+
+    <span class="hero text-2xl">LOGIN</span> 
+    <br><br>
+    <div class="container mx-auto border-2  shadow-md shadow-violet-700 rounded-lg place-items-center"> 
+        <form method="post" action="/login">
+            <br>
+            <!-- without labels, the input becomes null!!! be warned for next time -->
+            <label for="userName" class="px-7">Username: </label>
+            <input type="text" name="userName" id="userName" placeholder="User Name" value="" class="input input-bordered input-xs w-full max-w-xs px-7" required />
+            <br><br>
+            
+            <label for="password" class="px-7">Password: </label>
+            <input type="password" name="password" id="password" placeholder="Password"  class="input input-bordered input-xs w-full max-w-xs px-7" required />
+            <br><br>
+
+
+            <button class="btn bg-primary px-7" type="submit">Login</button>
+            <br><br>
+          </form>
+    </div>
+    <!-- if error messsage rendered -->
+    <% if (error === 'true') { %>
+        <div class="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span><%= errorMessage %></span>
+          </div>           
+    <% } %>
+
+    
+</body>
+</html>

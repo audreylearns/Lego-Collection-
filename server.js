@@ -1,156 +1,85 @@
 /********************************************************************************
-* WEB322 – Assignment 03
-*
+
+* WEB322 – Assignment 06
+
+* 
+
 * I declare that this assignment is my own work in accordance with Seneca's
+
 * Academic Integrity Policy:
-*
+
+* 
+
 * https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
+
+* 
+
+* Name: AUDREY DUZON Student ID: 019153147 Date: NOVEMBER 29, 2023
+
 *
-* Name:AUDREY DUZON Student ID: 019153147 Date: OCT 23, 2023
+
+* Published URL: https://magenta-rose-goose-kilt.cyclic.app/
+
 *
+
 ********************************************************************************/
 
 
 //ensure that the functions that we wrote in parts 2 & 3 will be available on the legoData object
 const legoData = require("./modules/legoSets");
+const authData = require("./modules/auth-service")
+const clientSessions = require('client-sessions');
 
 //ensure resolve
-legoData.Initialize().then(()=>{
-    console.log("Lego data initialized");
-});
+// legoData.Initialize().then(()=>{
+//     console.log("Lego data initialized");
+// });
+
+
 
 const express = require('express');
 const app = express();
 const HTTP_PORT = process.env.PORT || 3000;
 
-app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+app.set('view engine', 'ejs'); //new addition A4
+app.use(express.urlencoded({ extended: true })); //for json form handling
 
-
-// app.get('/', (req,res) => {
-//     res.send("Assignment 2: Audrey Duzon - 019153147");
-    
-// });
-
-
-// app.get('/lego/sets', (req,res) => {
-
-//     legoData.getAllSets().then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-    
-// });
-
-//p3 addition
-app.get('/lego/sets?', (req,res) => {
-    //default data to send 
-    
-    if (req.query.theme == 'Modular_Buildings') {
-        legoData.getSetsByTheme("Modular Buildings")
-        .then((data)=>{
-            var rtn = JSON.stringify(data) //convert to JSON the arr obj
-            res.send(rtn); //send to server :P
-        })
-        .catch((msg) => {
-            console.log(msg);
-            res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-        })
-    }else if(req.query.theme == 'Ultimate_Collector_Series' ){
-        legoData.getSetsByTheme("Ultimate Collector Series")
-        .then((data)=>{
-            var rtn = JSON.stringify(data) //convert to JSON the arr obj
-            res.send(rtn); //send to server :P
-        })
-        .catch((msg) => {
-            console.log(msg);
-            res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-        })
-    
-    }else if(req.query.theme == 'town' ){
-        legoData.getSetsByTheme("town")
-        .then((data)=>{
-            var rtn = JSON.stringify(data) //convert to JSON the arr obj
-            res.send(rtn); //send to server :P
-        })
-        .catch((msg) => {
-            console.log(msg);
-            res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-        })
-    }
-    else{
-        legoData.getAllSets().then((data)=>{
-            var rtn = JSON.stringify(data) //convert to JSON the arr obj
-            res.send(rtn); //send to server :P
-        })
-        .catch((msg) => {
-            console.log(msg);
-            res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-        })
-
-    }
-
-
+legoData.Initialize()
+.then(authData.Initialize)
+.then(function(){
+    app.listen(HTTP_PORT, function(){
+        console.log('Connection established at PORT '  + HTTP_PORT);
+    });
+}).catch(function(err){
+    console.log('Unable to start server: ' +err);
 });
 
-//pass scenario
-// app.get('/lego/sets/num-demo', (req,res) => {
-//     //res.send(legoData.getSetByNum("10188-1"));
-//     legoData.getSetByNum("10188-1")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
+//a6 reseneca website
+//to ensure that all of your templates will have access to a "session" object 
+app.use(
+    clientSessions({
+      cookieName: 'session', // this is the object name that will be added to 'req'
+      secret: 'o6LjQ5EVNC28ZgK64hDELM18ScpFQr', // this should be a long un-guessable string.
+      duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+      activeDuration: 1000 * 60, // the session will be extended by this many ms each request (1 minute)
+    })
+  );
 
-// });
-
-//fail scenario         -       uncomment to test   !!!!!!!!
-// app.get('/lego/sets/num-demo', (req,res) => {
-//     //res.send(legoData.getSetByNum("10188-1"));
-//     legoData.getSetByNum("0")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         res.send(msg)
-//     })
-
-// });
-
-//pass , no longer needed for here
-// app.get('/lego/sets/theme-demo', (req,res) => {
-//     //res.send(legoData.getSetsByTheme("educat"));
-//     legoData.getSetsByTheme("educat")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
-
-// });
-
-//fail scenario         -               uncomment to test!!!!!!!!
-// app.get('/lego/sets/theme-demo', (req,res) => {
-//     //res.send(legoData.getSetsByTheme("manga"));
-//     legoData.getSetsByTheme("manga")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
-
-
-// });
+  //a6
+  app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+  });
+  
+  //seneca website
+  function ensureLogin(req, res, next) {
+    if (!req.session.user) {
+      res.redirect('/login');
+    } else {
+      next();
+    }
+  }
 
 
 //ADD new A3 here
@@ -162,154 +91,208 @@ app.use(express.static('public')); //for static obj = css + img etc
 //include the html file
 
 app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname, '/views/home.html')) //returns absolute path to join and send HTML onto my server :D
-    //res.write('<p>Greetings</p>');
-    //res.end();
-    
+    res.render("home"); //A4 ADDITION
 });
 
 
 app.get('/about', (req,res) => {
-    res.sendFile(path.join(__dirname, '/views/about.html')) //returns absolute path to join and send HTML onto my server :D
-    //res.write('<p>Greetings</p>');
-    //res.end();
+    res.render("about");
+});
+
+// p4, lego sets and theme
+app.get('/lego/sets?', (req,res) => {
+    //default data to send 
+    let item_theme = req.query.theme; //query returns the property from string
+    if (item_theme) { //on the ?theme=item_theme
+        legoData.getSetsByTheme(item_theme) //not hardcoded, calls the function when button selected ^
+        .then((data)=>{
+            var legoSets = JSON.stringify(data) //transform to json the promise obj
+            legoSets = JSON.parse(legoSets); //return to js object
+            res.render("sets", {sets: legoSets});  //send the sets object to this ejs file
+        })
+        .catch((msg) => {
+            console.log(msg);
+            res.status(404).render("404", {message: "No Sets found for a the selected theme"});
+
+        })
+    }
+    else{
+        legoData.getAllSets().then((data)=>{
+            var legoSets = JSON.stringify(data) //transform to json the promise obj
+            legoSets = JSON.parse(legoSets); //return to js object
+            res.render("sets", {sets: legoSets});  //send the sets object to this ejs file
+        }).catch((msg) => {
+            console.log(msg);
+            //var error = "No view matched for a specific route ";
+            res.status(404).render("404", {message: "No view matched for a specific route "});
+
+        })
+    }
+
+});
+
+
+//legosets by num
+app.get('/lego/sets/:num', (req,res) => { //hardcoded
+    legoData.getSetByNum(req.params.num) //match the :variabl
+    .then((data)=>{
+        var legoSet = JSON.stringify(data) //convert to JSON the arr obj
+        legoSet = JSON.parse(legoSet); //copy above
+        res.render("set", {set: legoSet}) //send this object details onto set.ejs
+        //res.send(rtn); //send to server :P
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(404).render("404", {message: "No Sets found for the selected item number"}); //sends the message to the 404 ejs
+        //res.render("404");
+    })
+
+});
+
+
+//form
+app.get('/lego/addSet',ensureLogin, (req,res)=>{
+    legoData.getAllThemes()
+    .then((data)=>{
+        var themeData = JSON.stringify(data)
+        themeData  = JSON.parse(themeData)
+        res.render("addSet", {themes: themeData})
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(404).render("404", {message: "Set cannot be added"}); //sends the message to the 404 ejs
+        //res.render("404");
+    })
+
+});
+
+
+//form return
+app.post('/lego/addSet',ensureLogin, (req, res) => {    
+    legoData.addSet(req.body)
+    .then(() =>{
+        res.redirect('/lego/sets');
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(500).render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
+    })
     
-});
-
-//3 themes set up 
-// app.get('/lego/sets/theme=Modular_Buildings', (req,res) => {
-//     //res.send(legoData.getSetsByTheme("educat"));
-//     legoData.getSetsByTheme("Modular Buildings")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
-
-// });
-
-// app.get('/lego/sets/theme=Ultimate_Collector_Series', (req,res) => {
-//     //res.send(legoData.getSetsByTheme("educat"));
-//     legoData.getSetsByTheme("Ultimate Collector Series")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
-
-// });
-
-// app.get('/lego/sets/theme=town', (req,res) => {
-//     //res.send(legoData.getSetsByTheme("educat"));
-//     legoData.getSetsByTheme("town")
-//     .then((data)=>{
-//         var rtn = JSON.stringify(data) //convert to JSON the arr obj
-//         res.send(rtn); //send to server :P
-//     })
-//     .catch((msg) => {
-//         console.log(msg);
-//         res.send(msg)
-//     })
-
-// });
-
-
-
-//card 1 
-app.get('/lego/sets/10169-1', (req,res) => {
-    //res.send(legoData.getSetByNum("10188-1"));
-    legoData.getSetByNum("10169-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-//card 2
-app.get('/lego/sets/10166-1', (req,res) => {
-    legoData.getSetByNum("10166-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-//card 3
-app.get('/lego/sets/10165-1', (req,res) => {
-    legoData.getSetByNum("10165-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-
-//card 4
-app.get('/lego/sets/10182-1', (req,res) => {
-    legoData.getSetByNum("10182-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-//card 5
-app.get('/lego/sets/10184-1', (req,res) => {
-    legoData.getSetByNum("10184-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-
-//card 6
-app.get('/lego/sets/9349-1', (req,res) => {
-    legoData.getSetByNum("9349-1")
-    .then((data)=>{
-        var rtn = JSON.stringify(data) //convert to JSON the arr obj
-        res.send(rtn); //send to server :P
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(404).sendFile(path.join(__dirname, '/views/404.html')); //error html
-    })
-
-});
-
-//error html
-
-app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
   });
+
+  app.get('/lego/editSet/:num', ensureLogin, (req,res)=>{
+    const p = Promise.all([legoData.getSetByNum(req.params.num),legoData.getAllThemes()])
+    p
+    .then((values)=>{
+    //.then((data,theme)=>{
+        var setData = JSON.stringify(values[0]) //convert to JSON the arr obj
+        setData = JSON.parse(setData); //copy above
+
+        var themeData = JSON.stringify(values[1])
+        themeData  = JSON.parse(themeData)
+        res.render("editSet", { themes: themeData, set: setData });
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(404).render("404", {message: "Set cannot be added"}); //sends the message to the 404 ejs
+       
+    })
+
+});
+
+app.post('/lego/editSet', ensureLogin, (req, res) => {
+    const setData = req.body
+    legoData.editSet(setData.set_num,setData) //?
+    .then(() =>{
+        res.redirect('/lego/sets');
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(500).render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
+    })
+    
+  });
+
+  app.get('/lego/deleteSet/:num',ensureLogin, (req,res)=>{
+    legoData.deleteSet(req.params.num)
+    .then(()=>{
+        res.redirect('/lego/sets');
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(500).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
+       
+    })
+
+});
+
+//a6 routes
+app.get('/login', (req,res)=>{
+    res.render("login",{error:'false'});
+})//pass
+
+app.post('/login', (req, res)=>{
+    req.body.userAgent = req.headers['user-agent']
+    //req.body.userAgent = req.get('User-Agent'); //doesnt work, accoridng to npm do abpve instead
+    const user = {userName:req.body.userName, password: req.body.password,  userAgent:req.body.userAgent}
+    authData.checkUser(user)
+    .then((user) => {
+        req.session.user = {
+            userName: user.userName,// authenticated user's userName
+            email: user.email,// authenticated user's email
+            loginHistory: user.loginHistory// authenticated user's loginHistory
+        }
+        res.redirect('/lego/sets');
+    }).catch((msg) => {
+        console.log(msg);
+        res.render("login",{errorMessage: msg, userName: req.body.userName, error:'true'}  )
+        //returning the user back to the page, so the user does not forget the user value that was used to attempt to log into the system
+    })
+    
+})//pass
+
+
+app.get('/register', (req, res)=>{
+    res.render("register", {reg: 'empty'});
+})//pass
+
+app.post('/register', (req, res)=>{
+    var userData = { //as per instructions
+        userName: req.body.userName, //from the form
+        password: req.body.password, //from the form
+        password2: req.body.password2, //from the form
+        email: req.body.email, //from the form
+      };
+    authData.registerUser(userData) //as per instructions
+    .then(()=>{
+        res.render("register", {successMessage: "User created" , reg:'pos'})
+    })
+    .catch((errorMessage) => {
+        console.log(errorMessage);
+        res.render("register", {errorMessage: errorMessage, userName: req.body.userName, reg:'neg'} )
+        //returning the user back to the page, so the user does not forget the user value that was used to attempt to register with the system
+    })
+})//pass
+
+app.get("/logout", (req, res) => {
+    req.session.reset();
+    res.redirect("/");
+  });
+
+  app.get("/userHistory", ensureLogin,(req, res) => {
+    res.render("userHistory");
+  });
+
+
+
+//maybe delete
+// app.use((req, res, next) => {
+//     res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
+
+//   });
+  
+app.use((req, res, next) => {
+    res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});
+
+  });
+

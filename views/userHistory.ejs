@@ -1,0 +1,52 @@
+
+
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User History</title>
+    <link rel="stylesheet" href="/css/main.css" />
+
+</head>
+<body>
+    <!-- navbar -->
+
+    <%- include('partials/navbar', {page: "/userHistory"}) %>
+    
+
+
+    <!-- this ejs recieves {set: legoSet} -->
+    <!-- dynamic hero title -->
+    <div class=" mx-auto card justify-center items-center px-7">
+        <header class="hero text-2xl text-violet-700 uppercase"><%= session.user.userName %></header> 
+        <br>
+        <p class="text-lg "> History of: <%= session.user.email %></p>
+
+        <table class="shadow-md shadow-violet-700 rounded-lg table-fixed table-pin-cols px-7" >
+            <!-- sets is the js obj sent to this ejs, legoSets is the individual elements {sets: legoSets} -->
+            <th class="text-violet-700 uppercase text-lg  px-7">Login Date/Time</th> 
+            <th class="text-violet-700 uppercase text-lg  px-7 ">Client Information</th> 
+
+        <% session.user.loginHistory.forEach(login=>{ %>
+            <tr class="hover hover:bg-violet-600 hover:text-base-100 px-7">
+            <td class="px-7"><%= login.dateTime %></td>
+            <td class="px-7"> <%=login.userAgent %></td>
+
+            </tr> 
+        <% }) %>
+        </table>
+    </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+</body>
+</html>

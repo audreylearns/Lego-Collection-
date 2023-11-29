@@ -1,0 +1,101 @@
+
+
+<!DOCTYPE html>
+<html data-theme="pastel" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= set.name %></title>
+    <link rel="stylesheet" href="/css/main.css" />
+
+</head>
+<body>
+    <!-- navbar -->
+
+    <%- include('partials/navbar', {page: ""}) %>
+    
+
+
+    <!-- this ejs recieves {set: legoSet} -->
+    <!-- dynamic hero title -->
+    <div class=" mx-auto card w-96 shadow-md shadow-violet-700 justify-center items-center px-7">
+        <header class="hero text-2xl text-violet-700 uppercase"><%= set.name %></header> 
+        <br>
+        <p class="text-lg "> This model contains...</p>
+        <!-- dynamic data for "details" -->
+        <figure class="h-md w-md rounded-lg">
+            <img src="<%= set.img_url %>" />
+        </figure>
+        <p><span class="underline decoration-violet-700">Theme</span> : <%= set['Theme.name'] %></p>
+        <p><span class="underline decoration-violet-700">Year</span> : <%= set.year %></p>
+        <p><span class="underline decoration-violet-700"> Parts</span> : <%= set.num_parts %></p>
+        <br>
+        <br>
+        <!-- a quote -->
+        <p class="text-violet-700">Quote of the day
+            <br>
+            <br>
+            <div id="author"></div>
+            <div clas="text-md"id="quoted"></div>
+        </p>
+        <% if(session.user){ %> 
+        <!-- edit link -->
+        <div class="btn bg-amber-400 text-base-100 "><a href="/lego/editSet/<%= set.set_num %>" >Edit</a></div>
+        <% } %>
+        <br>
+        <!-- return link -->
+        <div class="btn bg-amber-400 text-base-100 "><a href="#" onclick="history.back(); return false;" >Return</a></div>
+    </div>
+
+
+
+
+    <script>
+        
+        /* TODO: "fetch" the data at: https://quotable.io/random and update an element in the DOM with the "content" and "author" */
+
+        
+
+
+        //fetch fn
+        async function makeAJAXRequest(method, url, body) { //the fetch fn
+            
+            //request API
+            let ReqApi = new Request('https://quotable.io/random',{
+                method: 'GET',
+                body: JSON.stringify()
+            })
+
+            fetch(ReqApi)
+            .then((response) => {
+                return response.json(); //returns a promise that will resolve with an object.
+            })
+            .then((json) => { //Do code to handle the promise object returned
+                console.log("Connected!")
+                console.log(json); // here is the parsed JSON response in console (on DOM if debugging)
+                const author = document.getElementById('author'); //get the elem
+                author.innerHTML = json.author; //insert
+
+                const quote = document.getElementById('quoted'); //get the elem
+                quote.innerHTML = json.content; //insert
+
+            });
+        }
+
+        function displayObj(){
+            makeAJAXRequest("GET",'https://quotable.io/random')
+
+        }
+
+        //call the fn made above to add DYNAMIC data
+        document.addEventListener("DOMContentLoaded", displayObj);
+
+
+    </script>
+
+
+
+
+
+</body>
+</html>

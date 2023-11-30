@@ -31,30 +31,33 @@ const authData = require("./modules/auth-service")
 const clientSessions = require('client-sessions');
 
 //ensure resolve
-// legoData.Initialize().then(()=>{
-//     console.log("Lego data initialized");
-// });
+legoData.Initialize().then(()=>{
+    console.log("Connected to Neon");
+});
 
+authData.Initialize().then(()=>{
+    console.log("Connectted to mongoDb");
+});
 
 
 const express = require('express');
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT || 3000;
 
-//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4
 app.use(express.urlencoded({ extended: true })); //for json form handling
 
-legoData.Initialize()
-//.then(authData.Initialize)
-.then(() => authData.Initialize())
-.then(function(){
-    app.listen(HTTP_PORT, function(){
-        console.log('Connection established at PORT '  + HTTP_PORT);
-    });
-}).catch(function(err){
-    console.log('Unable to start server: ' +err);
-});
+// legoData.Initialize()
+// //.then(authData.Initialize)
+// .then(() => authData.Initialize())
+// .then(function(){
+//     app.listen(HTTP_PORT, function(){
+//         console.log('Connection established at PORT '  + HTTP_PORT);
+//     });
+// }).catch(function(err){
+//     console.log('Unable to start server: ' +err);
+// });
 
 //a6 reseneca website
 //to ensure that all of your templates will have access to a "session" object 

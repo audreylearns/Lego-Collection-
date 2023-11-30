@@ -13,6 +13,7 @@ let userSchema = new Schema({
     loginHistory: [ { dateTime: Date, userAgent: String  } ]
   });
 
+  User = db.model("users", userSchema);
 
   //connects to dbs and instantiate model User from schema above
   function Initialize(){

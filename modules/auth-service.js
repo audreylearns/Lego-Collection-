@@ -13,13 +13,13 @@ let userSchema = new Schema({
     loginHistory: [ { dateTime: Date, userAgent: String  } ]
   });
 
-  mongoose.connect(process.env.MONGODB)
-  .then(() => {
-    console.log('Connection has been established with MONGODB successfully.');
-  })
-  .catch((err) => {
-    console.log('Unable to connect to the database:', err);
-  });
+//   mongoose.connect(process.env.MONGODB)
+//   .then(() => {
+//     console.log('Connection has been established with MONGODB successfully.');
+//   })
+//   .catch((err) => {
+//     console.log('Unable to connect to the database:', err);
+//   });
   
   let User = mongoose.model("User", userSchema); //use schema above to create a table/collection of User
 
@@ -27,15 +27,26 @@ let userSchema = new Schema({
   //connects to dbs and instantiate model User from schema above as per instructions
   function Initialize(){
     return new Promise(function (resolve, reject) {
-        let db = mongoose.createConnection(process.env.MONGODB);
-        db.on('error', (err)=>{
+        mongoose.connect(process.env.MONGODB)
+        .then(() => {
+            console.log('Connection has been established with MONGODB successfully.');
+            User = mongoose.model("User", userSchema);
+            resolve();
+        })
+        .catch((err) => {
+            console.log('Unable to connect to the database:', err);
             reject(err); // reject the promise with the provided error
         });
-        db.once('open', ()=>{
-           User = db.model("users", userSchema);
-           console.log('Connected to mongoDB database')
-           resolve();
-        });
+
+        // let db = mongoose.connect(process.env.MONGODB);
+        // db.on('error', (err)=>{
+        //     reject(err); // reject the promise with the provided error
+        // });
+        // db.once('open', ()=>{
+        //    User = db.model("users", userSchema);
+        //    console.log('Connected to mongoDB database')
+        //    resolve();
+        // });
     });
   }
 

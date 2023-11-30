@@ -295,9 +295,15 @@ legoData.Initialize().then(()=>{
     console.log("Connected to Neon");
 });
 
+// authData.Initialize().then(()=>{
+//     console.log("Connectted to mongoDb");
+// });
+
 authData.Initialize().then(()=>{
+    app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
     console.log("Connectted to mongoDb");
-});
+    //MongoClient.connect must be finished before allowing your app to serve requests.
+})
 
 //code as per instructions
 // legoData.Initialize() //calls postgresconnect
@@ -314,4 +320,4 @@ authData.Initialize().then(()=>{
 
 
 
-app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));

@@ -13,16 +13,8 @@ let userSchema = new Schema({
     loginHistory: [ { dateTime: Date, userAgent: String  } ]
   });
 
-//   mongoose.connect(process.env.MONGODB)
-//   .then(() => {
-//     console.log('Connection has been established with MONGODB successfully.');
-//   })
-//   .catch((err) => {
-//     console.log('Unable to connect to the database:', err);
-//   });
   
   let User = mongoose.model("User", userSchema); //use schema above to create a table/collection of User
-
 
   //connects to dbs and instantiate model User from schema above as per instructions
   function Initialize(){

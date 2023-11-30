@@ -14,7 +14,7 @@
 
 * 
 
-* Name: AUDREY DUZON Student ID: 019153147 Date: NOVEMBER 29, 2023
+* Name: AUDREY DUZON Student ID: 019153147 Date: NOVEMBER 30, 2023
 
 *
 
@@ -291,31 +291,31 @@ app.use((err,req, res, next) => {
 const HTTP_PORT = process.env.PORT || 8080;
 
 //ensure resolve
-legoData.Initialize().then(()=>{
-    console.log("Connected to Neon");
-});
+// legoData.Initialize().then(()=>{
+//     console.log("Connected to Neon");
+// });
 
 // authData.Initialize().then(()=>{
 //     console.log("Connectted to mongoDb");
 // });
 
-authData.Initialize().then(()=>{
-    app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
-    console.log("Connectted to mongoDb");
-    //MongoClient.connect must be finished before allowing your app to serve requests.
-})
+// authData.Initialize().then(()=>{
+//     app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+//     console.log("Connectted to mongoDb");
+//     //MongoClient.connect must be finished before allowing your app to serve requests.
+// })
 
 //code as per instructions
-// legoData.Initialize() //calls postgresconnect
-// .then(() => authData.Initialize())
-// //.then(authData.Initialize()) //calls mongodbconnection
-// .then(function(){
-//     app.listen(HTTP_PORT, function(){ //connect to port
-//         console.log('Connection established at PORT '  + HTTP_PORT);
-//     });
-// }).catch(function(err){
-//     console.log('Unable to start server: ' + err);
-// });
+legoData.Initialize() //calls postgresconnect
+//.then(() => authData.Initialize())
+.then(authData.Initialize()) //calls mongodbconnection
+.then(function(){
+    app.listen(HTTP_PORT, function(){ //connect to port
+        console.log('Connection established at PORT '  + HTTP_PORT);
+    });
+}).catch(function(err){
+    console.log('Unable to start server: ' + err);
+});
 
 
 

@@ -13,13 +13,13 @@ let userSchema = new Schema({
     loginHistory: [ { dateTime: Date, userAgent: String  } ]
   });
   
-  let User = mongoose.model("users", userSchema); //use schema above to create a table/collection of User
+  let User = mongoose.model("User", userSchema); //use schema above to create a table/collection of User
 
-  //connects to dbs and instantiate model User from schema above
+  //connects to dbs and instantiate model User from schema above as per instructions
   function Initialize(){
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection(process.env.MONGODB);
-
+        //const db = mongoose.connect(process.env.MONGODB);
         db.on('error', (err)=>{
             reject(err); // reject the promise with the provided error
         });

@@ -303,7 +303,8 @@ const HTTP_PORT = process.env.PORT || 8080;
 
 //code as per instructions
 legoData.Initialize() //calls postgresconnect
-.then(authData.Initialize) //calls mongodbconnection
+.then(() => authData.Initialize())
+//.then(authData.Initialize()) //calls mongodbconnection
 .then(function(){
     app.listen(HTTP_PORT, function(){ //connect to port
         console.log('Connection established at PORT '  + HTTP_PORT);

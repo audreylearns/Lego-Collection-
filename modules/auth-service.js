@@ -13,7 +13,7 @@ let userSchema = new Schema({
     loginHistory: [ { dateTime: Date, userAgent: String  } ]
   });
   
-  let db = mongoose.createConnection(process.env.MONGODB);
+  let db = mongoose.connect(process.env.MONGODB);
   User = db.model("users", userSchema);
 
   //connects to dbs and instantiate model User from schema above

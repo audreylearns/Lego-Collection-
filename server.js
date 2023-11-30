@@ -276,12 +276,12 @@ app.post('/register', (req, res)=>{
 
 //error routes ===========================================================================================================
 //maybe delete
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
     res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
 
   });
   
-app.use((req, res, next) => {
+app.use((err,req, res, next) => {
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});
 
 });

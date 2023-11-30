@@ -34,9 +34,9 @@ const clientSessions = require('client-sessions');
 
 const express = require('express');
 const app = express();
-const HTTP_PORT = process.env.PORT || 80800;
+const HTTP_PORT = process.env.PORT || 8080;
 
-app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4
 app.use(express.urlencoded({ extended: true })); //for json form handling
 

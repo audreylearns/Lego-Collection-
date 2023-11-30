@@ -25,76 +25,51 @@
 ********************************************************************************/
 
 
-//ensure that the functions that we wrote in parts 2 & 3 will be available on the legoData object
+//3rd party modules====================================================================================================================
+
+const clientSessions = require('client-sessions');
+const express = require('express');
+
+
+
+//local modules====================================================================================================================
 const legoData = require("./modules/legoSets");
 const authData = require("./modules/auth-service")
-const clientSessions = require('client-sessions');
 
-
-
-const express = require('express');
+//Middlewares====================================================================================================================
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
-
-//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+app.use(express.static('public')); //for static obj = css + img etc
 app.set('view engine', 'ejs'); //new addition A4
 app.use(express.urlencoded({ extended: true })); //for json form handling
 
-//ensure resolve
-// legoData.Initialize().then(()=>{
-//     console.log("Connected to Neon");
-// });
-
-// authData.Initialize().then(()=>{
-//     console.log("Connectted to mongoDb");
-// });
-
-
-legoData.Initialize()
-.then(authData.Initialize)
-//.then(() => authData.Initialize())
-.then(function(){
-    app.listen(HTTP_PORT, function(){
-        console.log('Connection established at PORT '  + HTTP_PORT);
-    });
-}).catch(function(err){
-    console.log('Unable to start server: ' +err);
-});
-
-//a6 reseneca website
-//to ensure that all of your templates will have access to a "session" object 
+//a6 re-seneca website: to ensure that all of your templates will have access to a "session" object 
 app.use(
     clientSessions({
       cookieName: 'session', // this is the object name that will be added to 'req'
-      secret: 'o6LjQ5EVNC28ZgK64hDELM18ScpFQr', // this should be a long un-guessable string.
+      secret: 'thisIsAudreysWebAssignment', // this should be a long un-guessable string.
       duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
       activeDuration: 1000 * 60, // the session will be extended by this many ms each request (1 minute)
     })
-  );
+);
 
-  //a6
-  app.use((req, res, next) => {
+//a6 as per instructions
+app.use((req, res, next) => {
     res.locals.session = req.session;
     next();
-  });
-  
-  //seneca website
-  function ensureLogin(req, res, next) {
+});
+
+//seneca website as per instructions
+function ensureLogin(req, res, next) {
     if (!req.session.user) {
-      res.redirect('/login');
+        res.redirect('/login');
     } else {
-      next();
+        next();
     }
-  }
+}
 
 
-//ADD new A3 here
-//identify a static folder
-const path = require('path'); //similar to #include
-app.use(express.static('public')); //for static obj = css + img etc
-
-
-//include the html file
+//Routes========================================================================================================================
+//gets
 
 app.get('/', (req,res) => {
     res.render("home"); //A4 ADDITION
@@ -172,21 +147,7 @@ app.get('/lego/addSet',ensureLogin, (req,res)=>{
 
 });
 
-
-//form return
-app.post('/lego/addSet',ensureLogin, (req, res) => {    
-    legoData.addSet(req.body)
-    .then(() =>{
-        res.redirect('/lego/sets');
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(500).render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
-    })
-    
-  });
-
-  app.get('/lego/editSet/:num', ensureLogin, (req,res)=>{
+app.get('/lego/editSet/:num', ensureLogin, (req,res)=>{
     const p = Promise.all([legoData.getSetByNum(req.params.num),legoData.getAllThemes()])
     p
     .then((values)=>{
@@ -206,6 +167,56 @@ app.post('/lego/addSet',ensureLogin, (req, res) => {
 
 });
 
+app.get('/lego/deleteSet/:num',ensureLogin, (req,res)=>{
+    legoData.deleteSet(req.params.num)
+    .then(()=>{
+        res.redirect('/lego/sets');
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(500).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
+       
+    })
+
+});
+
+
+app.get('/login', (req,res)=>{
+    res.render("login",{error:'false'});
+})//pass
+
+
+app.get('/register', (req, res)=>{
+    res.render("register", {reg: 'empty'});
+})//pass
+
+app.get("/logout", (req, res) => {
+    req.session.reset();
+    res.redirect("/");
+  });
+
+  app.get("/userHistory", ensureLogin,(req, res) => {
+    res.render("userHistory");
+  });
+
+
+//post
+
+//form return
+app.post('/lego/addSet',ensureLogin, (req, res) => {    
+    legoData.addSet(req.body)
+    .then(() =>{
+        res.redirect('/lego/sets');
+    })
+    .catch((msg) => {
+        console.log(msg);
+        res.status(500).render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
+    })
+    
+  });
+
+
+
 app.post('/lego/editSet', ensureLogin, (req, res) => {
     const setData = req.body
     legoData.editSet(setData.set_num,setData) //?
@@ -219,23 +230,6 @@ app.post('/lego/editSet', ensureLogin, (req, res) => {
     
   });
 
-  app.get('/lego/deleteSet/:num',ensureLogin, (req,res)=>{
-    legoData.deleteSet(req.params.num)
-    .then(()=>{
-        res.redirect('/lego/sets');
-    })
-    .catch((msg) => {
-        console.log(msg);
-        res.status(500).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
-       
-    })
-
-});
-
-//a6 routes
-app.get('/login', (req,res)=>{
-    res.render("login",{error:'false'});
-})//pass
 
 app.post('/login', (req, res)=>{
     req.body.userAgent = req.headers['user-agent']
@@ -258,9 +252,6 @@ app.post('/login', (req, res)=>{
 })//pass
 
 
-app.get('/register', (req, res)=>{
-    res.render("register", {reg: 'empty'});
-})//pass
 
 app.post('/register', (req, res)=>{
     var userData = { //as per instructions
@@ -280,17 +271,10 @@ app.post('/register', (req, res)=>{
     })
 })//pass
 
-app.get("/logout", (req, res) => {
-    req.session.reset();
-    res.redirect("/");
-  });
-
-  app.get("/userHistory", ensureLogin,(req, res) => {
-    res.render("userHistory");
-  });
 
 
 
+//error routes ===========================================================================================================
 //maybe delete
 // app.use((req, res, next) => {
 //     res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
@@ -300,5 +284,36 @@ app.get("/logout", (req, res) => {
 app.use((req, res, next) => {
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});
 
-  });
+});
+
+
+//connection====================================================================================================================
+const HTTP_PORT = process.env.PORT || 8080;
+//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
+
+
+//ensure resolve
+// legoData.Initialize().then(()=>{
+//     console.log("Connected to Neon");
+// });
+
+// authData.Initialize().then(()=>{
+//     console.log("Connectted to mongoDb");
+// });
+
+//code as per instructions
+legoData.Initialize() //calls postgresconnect
+.then(authData.Initialize) //calls mongodbconnection
+.then(function(){
+    app.listen(HTTP_PORT, function(){ //connect to port
+        console.log('Connection established at PORT '  + HTTP_PORT);
+    });
+}).catch(function(err){
+    console.log('Unable to start server: ' + err);
+});
+
+
+
+
+
 

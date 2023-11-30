@@ -30,14 +30,6 @@ const legoData = require("./modules/legoSets");
 const authData = require("./modules/auth-service")
 const clientSessions = require('client-sessions');
 
-//ensure resolve
-legoData.Initialize().then(()=>{
-    console.log("Connected to Neon");
-});
-
-authData.Initialize().then(()=>{
-    console.log("Connectted to mongoDb");
-});
 
 
 const express = require('express');
@@ -47,6 +39,16 @@ const HTTP_PORT = process.env.PORT || 3000;
 app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4
 app.use(express.urlencoded({ extended: true })); //for json form handling
+
+//ensure resolve
+legoData.Initialize().then(()=>{
+    console.log("Connected to Neon");
+});
+
+authData.Initialize().then(()=>{
+    console.log("Connectted to mongoDb");
+});
+
 
 // legoData.Initialize()
 // //.then(authData.Initialize)

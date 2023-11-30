@@ -34,7 +34,7 @@ const clientSessions = require('client-sessions');
 
 const express = require('express');
 const app = express();
-const HTTP_PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.PORT || 80800;
 
 app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
 app.set('view engine', 'ejs'); //new addition A4

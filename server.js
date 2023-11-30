@@ -174,7 +174,7 @@ app.get('/lego/deleteSet/:num',ensureLogin, (req,res)=>{
     })
     .catch((msg) => {
         console.log(msg);
-        res.status(500).render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
+        res.render("500", {message: "Set cannot be deleted"}); //sends the message to the 404 ejs
        
     })
 
@@ -225,7 +225,7 @@ app.post('/lego/editSet', ensureLogin, (req, res) => {
     })
     .catch((msg) => {
         console.log(msg);
-        res.status(500).render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
+        res.render("500", {message: "Error encountered: " + msg}); //sends the message to the 500 ejs
     })
     
   });

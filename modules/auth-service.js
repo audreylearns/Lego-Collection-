@@ -28,7 +28,6 @@ let userSchema = new Schema({
   function Initialize(){
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection(process.env.MONGODB);
-        //const db = mongoose.connect(process.env.MONGODB);
         db.on('error', (err)=>{
             reject(err); // reject the promise with the provided error
         });

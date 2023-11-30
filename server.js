@@ -289,32 +289,29 @@ app.use((err,req, res, next) => {
 
 //connection====================================================================================================================
 const HTTP_PORT = process.env.PORT || 8080;
-//app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));
-
 
 //ensure resolve
-// legoData.Initialize().then(()=>{
-//     console.log("Connected to Neon");
-// });
-
-// authData.Initialize().then(()=>{
-//     console.log("Connectted to mongoDb");
-// });
-
-//code as per instructions
-legoData.Initialize() //calls postgresconnect
-.then(() => authData.Initialize())
-//.then(authData.Initialize()) //calls mongodbconnection
-.then(function(){
-    app.listen(HTTP_PORT, function(){ //connect to port
-        console.log('Connection established at PORT '  + HTTP_PORT);
-    });
-}).catch(function(err){
-    console.log('Unable to start server: ' + err);
+legoData.Initialize().then(()=>{
+    console.log("Connected to Neon");
 });
 
+authData.Initialize().then(()=>{
+    console.log("Connectted to mongoDb");
+});
+
+//code as per instructions
+// legoData.Initialize() //calls postgresconnect
+// .then(() => authData.Initialize())
+// //.then(authData.Initialize()) //calls mongodbconnection
+// .then(function(){
+//     app.listen(HTTP_PORT, function(){ //connect to port
+//         console.log('Connection established at PORT '  + HTTP_PORT);
+//     });
+// }).catch(function(err){
+//     console.log('Unable to start server: ' + err);
+// });
 
 
 
 
-
+app.listen(HTTP_PORT, () => console.log('Connection established at PORT '  + HTTP_PORT));

@@ -276,10 +276,10 @@ app.post('/register', (req, res)=>{
 
 //error routes ===========================================================================================================
 //maybe delete, cyclic doesnt like this?
-// app.use((err, req, res, next) => {
-//     res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
+app.use((err, req, res, next) => {
+    res.status(500).render("500",{message:"ERROR: Contact the creator! https://github.com/audreylearns "});
 
-//   });
+  });
   
 app.use((err,req, res, next) => {
     res.status(404).render("404",{message:"ERROR: No view matched for a specific route"});
